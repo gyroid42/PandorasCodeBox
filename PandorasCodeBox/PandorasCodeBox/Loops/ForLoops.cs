@@ -205,4 +205,61 @@ public static unsafe class ForLoops
             return 0; 
         }
     }
+
+    public static void ForLoopsAreJustWhileLoops<T>(T[] array)
+    {
+        {
+            int i = 0;
+            while (i < array.Length)
+            {
+                // do stuff
+
+                i++;
+            }
+        }
+    }
+
+    public static void ForLoopsAreJustGotosWithAnIf<T>(T[] array)
+    {
+        {
+            int i = 0;
+            
+            LOOP_START:
+            // do stuff
+            if (++i < array.Length)
+            {
+                goto LOOP_START;
+            }
+        }
+    }
+
+    public static void EnterpriseLoop<T>(T[] array)
+    {
+        for (int i = FindZero(); i < GetLength(array); i = AddOneTo(i))
+        {
+            // do stuff
+        }
+
+        int FindZero()
+        {
+            return (int) (Math.Pow(182374897, 0) - 1);
+        }
+
+        int GetLength(T[] arrayToGetLengthOf)
+        {
+            int counter = FindZero();
+            for (int i = 0; i < arrayToGetLengthOf.Length; i++)
+            {
+                counter++;
+            }
+
+            return counter;
+        }
+
+        int AddOneTo(int i)
+        {
+            i += FindZero() + 1;
+            return i;
+        }
+    }
 }
