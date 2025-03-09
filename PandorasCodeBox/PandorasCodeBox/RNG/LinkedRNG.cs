@@ -30,11 +30,12 @@ public static unsafe class LinkedRNG
         
         int Roll(int startTime, Node* node)
         {
-            if (DateTime.UtcNow.Microsecond < startTime)
+            if (DateTime.UtcNow.Microsecond >= startTime + 1)
             {
                 return *(int*)node->Data;
             }
 
+            
             Node* nextNode = *(Node**)(node->Data + 8);
             return Roll(startTime, nextNode);
         }
