@@ -1,6 +1,4 @@
-﻿using PandorasCodeBox.Loops;
-
-namespace PandorasCodeBox.RNG;
+﻿namespace PandorasCodeBox.RNG;
 
 public static unsafe class LinkedRNG
 {
@@ -9,7 +7,7 @@ public static unsafe class LinkedRNG
         public fixed byte Data[16];
     }
     
-    public static int Random(int min, int max, int probability)
+    public static int Random(int min, int max)
     {
         var nodes = stackalloc Node[max - min];
         
@@ -27,17 +25,18 @@ public static unsafe class LinkedRNG
             }
         }
 
-        return min + Roll(probability, nodes);
+        int startTime = DateTime.UtcNow.Microsecond;
+        return min + Roll(startTime, nodes);
         
-        int Roll(int probability, Node* node)
+        int Roll(int startTime, Node* node)
         {
-            if (DateTime.UtcNow.Second % probability == 0)
+            if (DateTime.UtcNow.Microsecond >= startTime + 2)
             {
-                return probability;
+                return *(int*)node->Data;
             }
 
             Node* nextNode = *(Node**)(node->Data + 8);
-            return Roll(probability, nextNode);
+            return Roll(startTime, nextNode);
         }
     }
 }
