@@ -17,20 +17,20 @@ public static unsafe class LinkedRNG
             LOOP_START:
 
             *(int*)(nodes->Data + i * 16) = i;
-            *(Node**)(nodes->Data + i * 16 + 8) = &nodes[((i + 1) % (max - min)) * 16]; // man this line is dumb
+            *(Node**)(nodes->Data + i * 16 + 8) = &nodes[(i + 1) % (max - min)]; // man this line is dumb
             
             if (++i < max - min)
             {
                 goto LOOP_START;
             }
         }
-
+        
         int startTime = DateTime.UtcNow.Microsecond;
         return min + Roll(startTime, nodes);
         
         int Roll(int startTime, Node* node)
         {
-            if (DateTime.UtcNow.Microsecond >= startTime + 2)
+            if (DateTime.UtcNow.Microsecond < startTime)
             {
                 return *(int*)node->Data;
             }
